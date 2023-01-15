@@ -49,6 +49,8 @@
 	top: 0;
 	border-top: 0;
 	background-clip: padding-box;
+  background-color: aquamarine;
+  border: 1px solid #aaa;
   }
   thead th.pin {
 	left: 0;

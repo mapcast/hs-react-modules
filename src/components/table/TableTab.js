@@ -1,29 +1,58 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fieldOff, fieldOn, selectFields } from '../../app/slices/fieldSlice';
 import $ from 'jquery';
-import TableOnOffs from "./TableOnOffs";
 
-const tabs = ["name","type1","type2","category1","category2","value1","value2","schedule",
-"option1","option2","option3","option4","option5","start_time","end_time","created_by"];
+const tabs = [
+    "name",
+    "type1",
+    "type2",
+    "category1",
+    "category2",
+    "value1",
+    "value2",
+    "schedule",
+    "option1",
+    "option2",
+    "option3",
+    "option4",
+    "option5",
+    "start_time",
+    "end_time",        
+    "created_by",
+]
 
-const TableTab = () => {
+const TableOnOff = ({ tab }) => {
+    const ref = useRef(null);
+    const dispatch = useDispatch();
 
-    useEffect(() => {
-        $("input[name=table-on-off]").on("change", function() {
-            if($(this).is(":checked")) {
-                let tableData = $(this).val();
-                $(`[data=${tableData}]`).show();
-            } else {
-                let tableData = $(this).val();
-                $(`[data=${tableData}]`).hide();
-            }
-        });
-    }, []);
+    const changeStatus = () => {
+        if(ref.current.checked) {
+            dispatch(fieldOn(tab));
+        } else {
+            dispatch(fieldOff(tab));
+        }
+    }
 
     return (
-        <div className="too-container">
-            <TableOnOffs tableDatas={tabs}/>
+        <div key={tab} className='too-wrap'>
+            <input ref={ref} type='checkbox' name={tab} value={tab} onChange={changeStatus} defaultChecked/>
+            <label>{tab}</label>
         </div>
     );
 }
 
+const TableTab = () => {
+    return (
+        <div className="too-container">
+            {tabs.map(tab =>
+                <TableOnOff
+                tab={tab}
+                key={tab}
+                />
+            )}
+        </div>
+    );
+}
+ 
 export default TableTab;
